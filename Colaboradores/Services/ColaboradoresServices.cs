@@ -14,6 +14,54 @@ namespace Colaboradores.Services
             _context = connect;
         }
 
+
+        public async Task<ResponseModel<ColaboradoresModel>> AdicionarColaboradorPorId(ColaboradoresModel colab)
+        {
+            ResponseModel<ColaboradoresModel> resposta = new ResponseModel<ColaboradoresModel>();
+
+            try
+            {
+                var colabs = await _context.ColaboradoresDataBase.AddAsync(colab);
+                _context.SaveChanges();
+
+                resposta.Dados = colab;
+                return resposta;
+                
+                
+               
+            }
+            catch (Exception e)
+            {
+                resposta.Menssagem = e.Message;
+                return resposta;
+            }
+        }
+
+        public async Task<ResponseModel<ColaboradoresModel>> ApagarColaborador(int id)
+        {
+            ResponseModel<ColaboradoresModel> resposta = new ResponseModel<ColaboradoresModel>();
+            try
+            {
+                var colab = await _context.ColaboradoresDataBase.FirstOrDefaultAsync(x => x.Id == id);
+                if (colab == null)
+                {
+                    resposta.Menssagem = $"Colaborador com ID: {id} não encontrado";
+                    return resposta;
+                }
+                
+                _context.Remove(colab);
+                _context.SaveChanges();
+                resposta.Dados = colab;
+                return resposta;
+
+            }
+            catch(Exception e)
+            {
+                resposta.Menssagem = e.Message;
+                return resposta;
+            }
+        }
+
         public async Task<ResponseModel<ColaboradoresModel>> AtualizarColaboradorador(ColaboradorDto colab, int id)
         {
             ResponseModel<ColaboradoresModel> resposta = new ResponseModel<ColaboradoresModel>();

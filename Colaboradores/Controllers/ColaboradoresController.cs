@@ -38,6 +38,19 @@ namespace Colaboradores.Controllers
             return Ok(colabs);
         }
 
+        [HttpPut("Adicionar colaboradores")]
+        public async Task<ActionResult<ResponseModel<ColaboradoresModel>>> AdicionarCoaboradores(ColaboradoresModel colab)
+        {
+            var colabs = await _colab.AdicionarColaboradorPorId(colab);
+            return Ok(colabs);
+        }
+
+        [HttpDelete("Remover colaborador")]
+        public async Task<ActionResult<ColaboradoresModel>> RemoverColab(int id)
+        {
+            var colab = await _colab.ApagarColaborador(id);
+            return Ok(colab);
+        }
 
             
     }
